@@ -2,35 +2,17 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <title>Flask + MQTT Button</title>
+  <title>Flask + MQTT Test</title>
 </head>
 <body>
-  <h1>Enviar mensaje MQTT</h1>
-
-  <input type="text" id="input-msg" placeholder="Tu mensaje aquí" />
-  <button id="btn-send">Enviar a MQTT</button>
-
-  <p id="status"></p>
-
-  <script>
-    document.getElementById("btn-send").onclick = async () => {
-      const msg = document.getElementById("input-msg").value || "Hola desde web";
-      try {
-        const resp = await fetch("/publish", {
-          method: "POST",
-          headers: {"Content-Type":"application/json"},
-          body: JSON.stringify({ mensaje: msg })
-        });
-        const json = await resp.json();
-        document.getElementById("status").innerText = 
-          json.status === "ok"
-            ? `Enviado: ${json.sent}`
-            : "Error al enviar";
-      } catch (e) {
-        console.error(e);
-        document.getElementById("status").innerText = "Error en conexión";
-      }
-    };
-  </script>
+  <h1>Prueba MQTT</h1>
+  <input id="msg" placeholder="Mensaje…" />
+  <button onclick="
+    fetch('/publish', {
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({ mensaje: document.getElementById('msg').value })
+    });
+  ">Enviar</button>
 </body>
 </html>
