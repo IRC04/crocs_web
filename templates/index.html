@@ -1,63 +1,65 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <title>Pedido de Crocs</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>UNDEFINED</title>
   <link rel="stylesheet" href="styles.css">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://unpkg.com/paho-mqtt/mqtt.min.js"></script>
 </head>
 <body>
-  <h1 class="titulo">Pedido de Crocs</h1>
+  <h1 class="titulo">UNDEFINED</h1>
 
-  <!-- Tarjeta Principal -->
-  <div class="tarjeta-principal formulario" id="formulario-inicial">
-    <label for="talla">Elige tu talla:</label>
-    <select id="talla" class="input-estilo"></select>
+  <div class="tarjeta-principal">
+    <div class="formulario">
+      <label for="talla">Elige tu talla:</label>
+      <select class="select-talla">
+        <script>
+          for (let i = 37; i <= 44; i++) {
+            document.write(`<option value="${i}">${i}</option>`);
+          }
+        </script>
+      </select>
 
-    <label for="color">Elige tu color favorito:</label>
-    <select id="color" class="input-estilo">
-      <option disabled selected hidden>Clica aquí</option>
-      <option>Rosa</option>
-      <option>Azul</option>
-      <option>Verde</option>
-      <option>Amarillo</option>
-      <option>Negro</option>
-      <option>Morado</option>
-      <option>Naranja</option>
-      <option>Blanco</option>
-    </select>
+      <label for="color">Elige tu color favorito:</label>
+      <select class="select-color">
+        <option disabled selected hidden>Clica aquí</option>
+        <option>Rosa</option>
+        <option>Azul</option>
+        <option>Verde</option>
+        <option>Amarillo</option>
+        <option>Negro</option>
+        <option>Morado</option>
+        <option>Naranja</option>
+        <option>Blanco</option>
+      </select>
 
-    <button id="btn-pedir" class="boton-accion">Pedir</button>
-    <img src="imagencrocss.png" alt="Crocs" class="crocs">
+      <button id="btn-pedir">Pedir</button>
+    </div>
+    <img src="imagencrocss.png" class="crocs">
   </div>
 
-  <!-- Tarjeta Opciones -->
-  <div class="tarjeta-secundaria" id="opciones" style="display: none;">
+  <div class="tarjeta-secundaria opciones" style="display: none;">
     <div class="posicionqr">
       <img src="QR_PáginaWeb.jpeg" alt="QR" class="qr-img">
     </div>
-    <button id="btn-auxiliar" class="boton-accion">Auxiliar</button>
+    <button id="btn-auxiliar">Auxiliar</button>
   </div>
 
-  <!-- Mensaje de Procesando -->
-  <div class="mensaje" id="procesando" style="display: none;">
-    <p>Espere un momento, su pedido se está procesando...</p>
+  <div class="mensaje procesando" style="display: none;">
+    <p>Espere un momento, su pedido se está procesando</p>
   </div>
 
-  <!-- Acciones Finales -->
-  <div class="tarjeta-principal formulario" id="acciones" style="display: none;">
+  <div class="tarjeta-principal acciones" style="display: none;">
     <label>¿Qué desea hacer?</label>
-    <button id="btn-compra" class="boton-accion">Compra</button>
-    <button id="btn-devolucion" class="boton-accion">Devolución</button>
+    <button id="btn-compra">Compra</button>
+    <button id="btn-devolucion">Devolución</button>
   </div>
 
-  <!-- Mensaje Final -->
-  <div class="mensaje" id="mensaje-final" style="display: none; text-align: center;">
+  <div class="mensaje mensaje-final" style="display: none; text-align: center;">
     <p id="mensaje-texto"></p>
-    <button id="btn-reiniciar" class="boton-accion">Volver al inicio</button>
+    <button id="btn-volver">Volver al inicio</button>
   </div>
 
-  <!-- Script externo -->
-  <script src="../static/script.js"></script>
+  <script src="script.js"></script>
 </body>
 </html>
