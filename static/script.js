@@ -1,31 +1,23 @@
-
-const broker = "wss://broker.emqx.io:8084/mqtt"; 
-const topic = "pedido/cliente";
-const clientId = "web_" + parseInt(Math.random() * 100000);
-
-const client = new Paho.MQTT.Client(broker, clientId);
-
-
-client.connect({
-  onSuccess: () => console.log("Conectado a MQTT"),
-  onFailure: err => console.error("Fallo conexión MQTT", err),
-  useSSL: true
-});
-
+// Opcional: inicializar cliente MQTT si lo vas a usar para recibir
+// const broker = "wss://broker.emqx.io:8084/mqtt";
+// const topic  = "tienda/respuesta";
+// const clientId = "web_" + parseInt(Math.random() * 100000, 10);
+// const client = new Paho.MQTT.Client(broker, clientId);
+// client.connect({ onSuccess: () => client.subscribe(topic), useSSL: true });
 
 document.getElementById('btn-pedir').addEventListener('click', () => {
   mostrarOpciones();
   enviarPedido();
 });
-document.getElementById('btn-auxiliar').addEventListener('click', mostrarProcesando);
-document.getElementById('btn-compra').addEventListener('click', () => mostrarMensaje('Compra Realizada'));
-document.getElementById('btn-devolucion').addEventListener('click', () => mostrarMensaje('Colóquelo en la ventana de devolución'));
-document.getElementById('btn-volver').addEventListener('click', volverAlInicio);
 
+document.getElementById('btn-auxiliar')?.addEventListener('click', mostrarProcesando);
+document.getElementById('btn-compra')?.addEventListener('click', () => mostrarMensaje('Compra Realizada'));
+document.getElementById('btn-devolucion')?.addEventListener('click', () => mostrarMensaje('Colóquelo en la ventana de devolución'));
+document.getElementById('btn-volver')?.addEventListener('click', volverAlInicio);
 
 function enviarPedido() {
-  const talla = document.querySelector('.select-talla').value;
-  const color = document.querySelector('.select-color').value;
+  const talla = document.getElementById('select-talla').value;
+  const color = document.getElementById('select-color').value;
 
   fetch("/enviar", {
     method: "POST",
@@ -33,11 +25,11 @@ function enviarPedido() {
     body: JSON.stringify({ talla, color })
   })
   .then(res => res.json())
-  .then(data => console.log("Respuesta del servidor:", data))
+  .then(data => {
+    console.log("Respuesta del servidor:", data);
+  })
   .catch(err => console.error("Error enviando al servidor:", err));
 }
-
-
 
 function mostrarOpciones() {
   document.querySelector('.tarjeta-principal').style.display = 'none';

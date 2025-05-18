@@ -1,4 +1,6 @@
 import os
+import json
+import time
 from flask import Flask, request, render_template, jsonify
 import paho.mqtt.client as mqtt
 
@@ -6,8 +8,8 @@ app = Flask(__name__)
 
 # Configuración MQTT
 MQTT_BROKER = 'broker.hivemq.com'
-MQTT_PORT = 1883
-MQTT_TOPIC = 'tienda/respuesta'
+MQTT_PORT   = 1883
+MQTT_TOPIC  = 'tienda/respuesta'
 
 @app.route('/')
 def index():
@@ -15,42 +17,31 @@ def index():
 
 @app.route('/enviar', methods=['POST'])
 def enviar():
-    try:
-        data = request.get_json()
-        talla = data.get('talla')
-        color = data.get('color')
+    data = request.get_json(force=True)
+    talla = data.get('talla')
+    color = data.get('color')
 
-        if not talla or not color:
-            return jsonify({'error': 'Faltan datos'}), 400
+    if not talla or not color:
+        return jsonify({'error': 'Faltan datos'}), 400
 
-        mensaje = f"Talla: {talla}, Color: {color}"
-        print("📤 Enviando mensaje MQTT:", mensaje)
+    # Preparamos payload en JSON
+    payload = json.dumps({
+        'talla': talla,
+        'color': color
+    })
 
-        # Cliente MQTT (sin WebSocket)
-        mqtt_client = mqtt.Client()
+    print("📤 Enviando mensaje MQTT:", payload)
 
-        def on_connect(client, userdata, flags, rc):
-            if rc == 0:
-                print("✅ Conectado a MQTT")
-                client.publish(MQTT_TOPIC, mensaje)
-            else:
-                print(f"❌ Fallo conexión MQTT: {rc}")
+    # Publicamos de forma síncrona
+    client = mqtt.Client()
+    client.connect(MQTT_BROKER, MQTT_PORT, 60)
+    client.publish(MQTT_TOPIC, payload)
+    client.disconnect()
 
-        mqtt_client.on_connect = on_connect
-
-        mqtt_client.connect(MQTT_BROKER, MQTT_PORT, 60)
-        mqtt_client.loop_start()
-
-        import time
-        time.sleep(2)  # Esperar publicación
-        mqtt_client.loop_stop()
-        mqtt_client.disconnect()
-
-        return jsonify({'status': 'Mensaje enviado correctamente'})
-    except Exception as e:
-        print("💥 Error:", e)
-        return jsonify({'error': str(e)}), 500
+    return jsonify({'status': 'Mensaje enviado correctamente'})
 
 if __name__ == '__main__':
-    port = int(os.environ.get("PORT", 5000))
+    # Render inyecta el puerto en la var. de entorno PORT
+    port = int(os.environ.get('PORT', 5000))
+    # Bind a 0.0.0.0 para que Render lo exponga
     app.run(debug=True, host='0.0.0.0', port=port)
