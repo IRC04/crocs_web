@@ -1,12 +1,11 @@
 import os
 import json
-import time
-from flask import Flask, request, render_template, jsonify
+from flask import Flask, request, jsonify, render_template
 import paho.mqtt.client as mqtt
 
-app = Flask(__name__)
+app = Flask(__name__, template_folder='templates', static_folder='static')
 
-# Configuración MQTT
+# Datos del broker
 MQTT_BROKER = 'broker.hivemq.com'
 MQTT_PORT   = 1883
 MQTT_TOPIC  = 'tienda/respuesta'
@@ -24,24 +23,16 @@ def enviar():
     if not talla or not color:
         return jsonify({'error': 'Faltan datos'}), 400
 
-    # Preparamos payload en JSON
-    payload = json.dumps({
-        'talla': talla,
-        'color': color
-    })
+    payload = json.dumps({'talla': talla, 'color': color})
+    print("📤 Publicando en MQTT:", payload)
 
-    print("📤 Enviando mensaje MQTT:", payload)
-
-    # Publicamos de forma síncrona
     client = mqtt.Client()
     client.connect(MQTT_BROKER, MQTT_PORT, 60)
     client.publish(MQTT_TOPIC, payload)
     client.disconnect()
 
-    return jsonify({'status': 'Mensaje enviado correctamente'})
+    return jsonify({'status': 'Publicado', 'payload': payload})
 
 if __name__ == '__main__':
-    # Render inyecta el puerto en la var. de entorno PORT
     port = int(os.environ.get('PORT', 5000))
-    # Bind a 0.0.0.0 para que Render lo exponga
-    app.run(debug=True, host='0.0.0.0', port=port)
+    app.run(host='0.0.0.0', port=port, debug=True)

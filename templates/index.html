@@ -2,47 +2,36 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <title>UNDEFINED</title>
-  <link rel="stylesheet" href="../static/styles.css">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <!-- Paho MQTT (opcional si luego lo usas para suscribir/recibir) -->
-  <script src="https://unpkg.com/paho-mqtt/mqtt.min.js"></script>
+  <title>Tienda Crocs</title>
 </head>
 <body>
-  <h1 class="titulo">UNDEFINED</h1>
+  <h1>Tienda Crocs</h1>
 
-  <div class="tarjeta-principal">
-    <div class="formulario">
-      <label for="select-talla">Elige tu talla:</label>
-      <select id="select-talla">
-        <script>
-          for (let i = 37; i <= 44; i++) {
-            document.write(`<option value="${i}">${i}</option>`);
-          }
-        </script>
-      </select>
+  <label for="talla">Talla:</label>
+  <select id="talla">
+    <option value="" disabled selected>Selecciona talla</option>
+    <script>
+      for (let i = 37; i <= 44; i++) {
+        document.write(`<option value="${i}">${i}</option>`);
+      }
+    </script>
+  </select>
 
-      <label for="select-color">Elige tu color favorito:</label>
-      <select id="select-color">
-        <option disabled selected hidden>Clica aquí</option>
-        <option>Rosa</option>
-        <option>Azul</option>
-        <option>Verde</option>
-        <option>Amarillo</option>
-        <option>Negro</option>
-        <option>Morado</option>
-        <option>Naranja</option>
-        <option>Blanco</option>
-      </select>
+  <label for="color">Color:</label>
+  <select id="color">
+    <option value="" disabled selected>Selecciona color</option>
+    <option>Rosa</option>
+    <option>Azul</option>
+    <option>Verde</option>
+    <option>Amarillo</option>
+    <option>Negro</option>
+    <option>Morado</option>
+    <option>Naranja</option>
+    <option>Blanco</option>
+  </select>
 
-      <button id="btn-pedir">Pedir</button>
-    </div>
-    <img src="../static/imagencrocss.png" class="crocs" alt="Crocs">
-  </div>
+  <button id="enviar">Enviar</button>
 
-  <!-- resto de tarjetas igual que antes… -->
-
-  <!-- Incluimos el script al final -->
   <script src="../static/script.js"></script>
 </body>
 </html>
