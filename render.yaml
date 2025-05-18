@@ -1,0 +1,9 @@
+# render.yaml
+services:
+  - type: web
+    name: crocs-web
+    env: python
+    # Punto de entrada de tu app; si tu app.py está en la raíz, déjalo en '.'
+    root: .
+    buildCommand: pip install -r requirements.txt
+    startCommand: python app.py
