@@ -3,10 +3,10 @@
 <head>
   <meta charset="UTF-8" />
   <title>Pedido de Pizza</title>
-  <!-- Cargamos el script JS externo -->
-  <script src="script.js" defer></script>
-  <!-- MQTT.js vía CDN -->
+  <!-- MQTT.js vía CDN (debe cargarse antes de tu script) -->
   <script src="https://unpkg.com/mqtt/dist/mqtt.min.js"></script>
+  <!-- Cargamos el script JS externo después de MQTT.js -->
+  <script src="script.js" defer></script>
   <style>
     body { font-family: sans-serif; padding: 2rem; }
     label { display: block; margin-bottom: 1rem; }
