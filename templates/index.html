@@ -1,37 +1,12 @@
 <!DOCTYPE html>
-<html lang="es">
+<html>
 <head>
-  <meta charset="UTF-8">
-  <title>Tienda Crocs</title>
+  <title>Pedido de Pizza</title>
 </head>
 <body>
-  <h1>Tienda Crocs</h1>
-
-  <label for="talla">Talla:</label>
-  <select id="talla">
-    <option value="" disabled selected>Selecciona talla</option>
-    <script>
-      for (let i = 37; i <= 44; i++) {
-        document.write(`<option value="${i}">${i}</option>`);
-      }
-    </script>
-  </select>
-
-  <label for="color">Color:</label>
-  <select id="color">
-    <option value="" disabled selected>Selecciona color</option>
-    <option>Rosa</option>
-    <option>Azul</option>
-    <option>Verde</option>
-    <option>Amarillo</option>
-    <option>Negro</option>
-    <option>Morado</option>
-    <option>Naranja</option>
-    <option>Blanco</option>
-  </select>
-
-  <button id="enviar">Enviar</button>
-
-  <script src="../static/script.js"></script>
+  <h1>Haz tu pedido de pizza</h1>
+  <form action="/enviar" method="POST">
+    <button type="submit">Enviar pedido</button>
+  </form>
 </body>
 </html>

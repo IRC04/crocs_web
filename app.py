@@ -1,13 +1,16 @@
-import os, json
-from flask import Flask, request, jsonify, render_template
+from flask import Flask, request, render_template
 import paho.mqtt.client as mqtt
+import ssl
+import qrcode
+import io
+import base64
 
-app = Flask(__name__, template_folder='templates')
+app = Flask(__name__)
 
-# Configuración MQTT sobre WebSockets
+# MQTT Config
 MQTT_BROKER = 'broker.emqx.io'
-MQTT_PORT   = 8083           # WebSocket port (no bloqueado)
-MQTT_TOPIC  = 'tienda/respuesta'
+MQTT_PORT = 8084  # WebSocket seguro
+MQTT_TOPIC = 'tienda/pedidos'
 
 @app.route('/')
 def index():
@@ -15,27 +18,39 @@ def index():
 
 @app.route('/enviar', methods=['POST'])
 def enviar():
-    data = request.get_json(force=True)
-    talla = data.get('talla')
-    color = data.get('color')
+    try:
+        mensaje = "Hola desde Flask con WebSocket TLS"
+        mqtt_client = mqtt.Client(transport="websockets")
 
-    if not talla or not color:
-        return jsonify({'error': 'Faltan datos'}), 400
+        mqtt_client.tls_set(cert_reqs=ssl.CERT_NONE)
+        mqtt_client.tls_insecure_set(True)
 
-    payload = json.dumps({'talla': talla, 'color': color})
-    print("📤 Publicando en MQTT (WS):", payload)
+        def on_connect(client, userdata, flags, rc):
+            if rc == 0:
+                print("Conectado correctamente")
+                client.publish(MQTT_TOPIC, mensaje)
+            else:
+                print(f"Falló la conexión: {rc}")
 
-    # Cliente MQTT sobre WebSockets
-    client = mqtt.Client(transport='websockets')
-    client.ws_set_options(path="/mqtt")   # EMQX usa /mqtt por defecto
-    client.connect(MQTT_BROKER, MQTT_PORT, 60)
-    client.loop_start()
-    client.publish(MQTT_TOPIC, payload)
-    client.loop_stop()
-    client.disconnect()
+        mqtt_client.on_connect = on_connect
+        mqtt_client.connect(MQTT_BROKER, MQTT_PORT, 60)
+        mqtt_client.loop_start()
 
-    return jsonify({'status': 'Publicado vía WS', 'payload': payload})
+        import time
+        time.sleep(2)
+        mqtt_client.loop_stop()
+
+        # Generar QR
+        qr = qrcode.make(mensaje)
+        buffer = io.BytesIO()
+        qr.save(buffer, format="PNG")
+        img_str = base64.b64encode(buffer.getvalue()).decode("utf-8")
+
+        # Pasar la imagen codificada al HTML
+        return render_template('qr.html', qr_image=img_str)
+
+    except Exception as e:
+        return f"Error: {str(e)}", 500
 
 if __name__ == '__main__':
-    port = int(os.environ.get('PORT', 5000))
-    app.run(host='0.0.0.0', port=port, debug=True)
+    app.run(debug=True)
