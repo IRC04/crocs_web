@@ -7,12 +7,12 @@
   align-items: center;
   min-height: 100vh;
   padding: 1rem;
-  background-color: #f5f5f5;
+  background-color: #000000;
 }
 
 /* Tarjeta con bordes curvos y sombra */
 .card {
-  background-color: #ffffff;
+  background-color: #4f4f4f;
   padding: 2rem;
   border-radius: 1rem;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
