@@ -7,45 +7,45 @@
   <script src="https://unpkg.com/mqtt/dist/mqtt.min.js"></script>
   <!-- Cargamos el script JS externo después de MQTT.js -->
   <script src="../static/script.js" defer></script>
-  <style>
-    body { font-family: sans-serif; padding: 2rem; }
-    label { display: block; margin-bottom: 1rem; }
-    select, button { padding: 0.5rem; font-size: 1rem; }
-  </style>
+  <link rel="stylesheet" href="../script/styles.css">
 </head>
 <body>
-  <h1>Haz tu pedido de pizza</h1>
-  <form id="pedidoForm">
-    <label for="talla">
-      Talla:
-      <select name="talla" id="talla" required>
-        <option value="" disabled selected>Selecciona talla</option>
-        <option value="36">36</option>
-        <option value="37">37</option>
-        <option value="38">38</option>
-        <option value="39">39</option>
-        <option value="40">40</option>
-        <option value="41">41</option>
-        <option value="42">42</option>
-        <option value="43">43</option>
-        <option value="44">44</option>
-        <option value="45">45</option>
-      </select>
-    </label>
+  <div class="card-container">
+    <div class="card">
+      <h1>Haz tu pedido de pizza</h1>
+      <form id="pedidoForm">
+        <label for="talla">
+          Talla:
+          <select name="talla" id="talla" required>
+            <option value="" disabled selected>Selecciona talla</option>
+            <option value="36">36</option>
+            <option value="37">37</option>
+            <option value="38">38</option>
+            <option value="39">39</option>
+            <option value="40">40</option>
+            <option value="41">41</option>
+            <option value="42">42</option>
+            <option value="43">43</option>
+            <option value="44">44</option>
+            <option value="45">45</option>
+          </select>
+        </label>
 
-    <label for="color">
-      Color:
-      <select name="color" id="color" required>
-        <option value="" disabled selected>Selecciona color</option>
-        <option value="rojo">Rojo</option>
-        <option value="azul">Azul</option>
-        <option value="verde">Verde</option>
-        <option value="negro">Negro</option>
-        <option value="blanco">Blanco</option>
-      </select>
-    </label>
+        <label for="color">
+          Color:
+          <select name="color" id="color" required>
+            <option value="" disabled selected>Selecciona color</option>
+            <option value="rojo">Rojo</option>
+            <option value="azul">Azul</option>
+            <option value="verde">Verde</option>
+            <option value="negro">Negro</option>
+            <option value="blanco">Blanco</option>
+          </select>
+        </label>
 
-    <button type="submit">Enviar pedido</button>
-  </form>
+        <button type="submit">Enviar pedido</button>
+      </form>
+    </div>
+  </div>
 </body>
 </html>
