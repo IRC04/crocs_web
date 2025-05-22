@@ -1,7 +1,7 @@
-
+// script.js
 
 document.addEventListener('DOMContentLoaded', () => {
-  // Mapea cada color con su fichero .glb (nombres según tus archivos existentes)
+  // 1) Mapea cada color con su fichero .glb
   const modelMap = {
     Rojo: 'Crocs-Rojo.glb',
     Azul: 'Crocs-Azul.glb',
@@ -13,57 +13,49 @@ document.addEventListener('DOMContentLoaded', () => {
     Rosa: 'Crocs-Rosa.glb',
   };
 
-  // Ruta base donde guardas los modelos (ajusta si están en 'images' o 'models')
+  // Ruta base de modelos
   const modelFolder = '../static/images/';
-
   const colorSelect = document.getElementById('color');
   const modelViewer = document.getElementById('croc-viewer');
 
-  colorSelect.addEventListener('change', () => {
+  // Función para actualizar el modelo
+  function updateModel() {
     const color = colorSelect.value;
     if (!color || !modelMap[color]) return;
-
     const newSrc = modelFolder + modelMap[color];
-    modelViewer.src = newSrc; // También puedes usar setAttribute si quieres
-  });
+    console.log('Cambiando modelo a:', newSrc);
+    modelViewer.setAttribute('src', newSrc);
+  }
 
-  // Eventos para cambio inmediato
-  colorSelect.addEventListener('input', updateModel);
+  // Listener para cambio de color
   colorSelect.addEventListener('change', updateModel);
-  // 1) Conectar al broker EMQX por WSS
+
+  // 2) Conectar al broker EMQX por WSS
   console.log('Intentando conectar a MQTT...');
   const client = mqtt.connect('wss://broker.emqx.io:8084/mqtt');
 
-  client.on('connect', () => {
-    console.log('✅ Conectado a MQTT por WSS');
-  });
-  client.on('error', err => {
-    console.error('❌ Error MQTT:', err);
-  });
-  client.on('reconnect', () => {
-    console.log('⏳ Reintentando conexión MQTT...');
-  });
+  client.on('connect', () => console.log('✅ Conectado a MQTT por WSS'));
+  client.on('error', err => console.error('❌ Error MQTT:', err));
+  client.on('reconnect', () => console.log('⏳ Reintentando conexión MQTT...'));
 
-  // 2) Capturar el submit del formulario
+  // 3) Capturar el submit del formulario
   const form = document.getElementById('pedidoForm');
   form.addEventListener('submit', e => {
     e.preventDefault();
 
-    // 3) Leer valores
+    // Leer valores
     const talla = document.getElementById('talla').value;
-    const color = document.getElementById('color').value;
+    const color = colorSelect.value;
 
     if (!talla || !color) {
       alert('Por favor, selecciona talla y color.');
       return;
     }
 
-    // 4) Construir JSON
+    // Construir y publicar JSON
     const payload = JSON.stringify({ talla, color });
     console.log('Payload a enviar:', payload);
 
-    // 5) Publicar JSON en MQTT
-    // Esperar a estar conectado antes de publicar
     if (client.connected) {
       client.publish('tienda/pedidos', payload, {}, err => {
         if (err) {
