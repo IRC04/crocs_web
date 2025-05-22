@@ -1,5 +1,4 @@
 // script.js
-
 document.addEventListener('DOMContentLoaded', () => {
   // 1) Conectar al broker EMQX por WSS
   console.log('Intentando conectar a MQTT...');
@@ -15,26 +14,32 @@ document.addEventListener('DOMContentLoaded', () => {
     console.log('⏳ Reintentando conexión MQTT...');
   });
 
-  // 2) Capturar el submit del formulario
-  const form = document.getElementById('pedidoForm');
-  form.addEventListener('submit', e => {
-    e.preventDefault();
+  // 2) Localizar el botón de enviar
+  const sendButton = document.querySelector('.card button[type="submit"]');
+  if (!sendButton) {
+    console.error('❌ No he encontrado el botón de envío en el DOM');
+    return;
+  }
 
-    // 3) Leer valores
-    const talla = document.getElementById('talla').value;
-    const color = document.getElementById('color').value;
+  // 3) Al hacer click en el botón...
+  sendButton.addEventListener('click', (e) => {
+    e.preventDefault();  // evita recargas
+
+    // 4) Leer valores de los selects
+    const tallaEl = document.getElementById('talla');
+    const colorEl = document.getElementById('color');
+    const talla = tallaEl ? tallaEl.value : '';
+    const color = colorEl ? colorEl.value : '';
 
     if (!talla || !color) {
       alert('Por favor, selecciona talla y color.');
       return;
     }
 
-    // 4) Construir JSON
+    // 5) Construir y publicar el payload
     const payload = JSON.stringify({ talla, color });
     console.log('Payload a enviar:', payload);
 
-    // 5) Publicar JSON en MQTT
-    // Esperar a estar conectado antes de publicar
     if (client.connected) {
       client.publish('tienda/pedidos', payload, {}, err => {
         if (err) {
