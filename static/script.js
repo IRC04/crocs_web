@@ -30,44 +30,37 @@ document.addEventListener('DOMContentLoaded', () => {
   // Listener para cambio de color
   colorSelect.addEventListener('change', updateModel);
 
-  // 2) Conectar al broker EMQX por WSS
+ // 2) Conexión MQTT
   console.log('Intentando conectar a MQTT...');
   const client = mqtt.connect('wss://broker.emqx.io:8084/mqtt');
-
   client.on('connect', () => console.log('✅ Conectado a MQTT por WSS'));
   client.on('error', err => console.error('❌ Error MQTT:', err));
-  client.on('reconnect', () => console.log('⏳ Reintentando conexión MQTT...'));
 
-  // 3) Capturar el submit del formulario
-  const form = document.getElementById('pedidoForm');
-  form.addEventListener('submit', e => {
-    e.preventDefault();
-
-    // Leer valores
+  // 3) Enviar mensaje al pulsar botón
+  sendBtn.addEventListener('click', () => {
     const talla = document.getElementById('talla').value;
     const color = colorSelect.value;
+    const nombre = document.getElementById('nombre').value;
+    const dni    = document.getElementById('dni').value;
 
-    if (!talla || !color) {
-      alert('Por favor, selecciona talla y color.');
+    if (!talla || !color || !nombre || !dni) {
+      alert('Rellena todos los campos antes de enviar.');
       return;
     }
 
-    // Construir y publicar JSON
-    const payload = JSON.stringify({ talla, color });
-    console.log('Payload a enviar:', payload);
+    const payload = JSON.stringify({ nombre, dni, talla, color });
+    console.log('Publicando:', payload);
 
     if (client.connected) {
       client.publish('tienda/pedidos', payload, {}, err => {
         if (err) {
-          console.error('❌ Publicación fallida:', err);
-          alert('Error al enviar el pedido. Revisa la consola.');
+          console.error('Error al publicar:', err);
         } else {
-          console.log('✅ Pedido publicado correctamente');
-          alert(`Pedido enviado:\n${payload}`);
+          alert('Pedido enviado!');
         }
       });
     } else {
-      alert('Aún no se ha conectado al broker MQTT. Inténtalo de nuevo en unos segundos.');
+      alert('No conectado a MQTT aún.');
     }
   });
 });
