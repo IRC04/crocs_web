@@ -2,50 +2,66 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
-  <title>Pedido de Pizza</title>
+  <title>UNDEFINED</title>
   <!-- MQTT.js vía CDN (debe cargarse antes de tu script) -->
   <script src="https://unpkg.com/mqtt/dist/mqtt.min.js"></script>
   <!-- Cargamos el script JS externo después de MQTT.js -->
   <script src="../static/script.js" defer></script>
+  <script type="module" src="https://ajax.googleapis.com/ajax/libs/model-viewer/4.0.0/model-viewer.min.js"></script>
   <link rel="stylesheet" href="../static/styles.css">
 </head>
 <body>
-  <div class="card-container">
+
     <div class="card">
-      <h1>Haz tu pedido de pizza</h1>
-      <form id="pedidoForm">
-        <label for="talla">
-          Talla:
-          <select name="talla" id="talla" required>
-            <option value="" disabled selected>Selecciona talla</option>
-            <option value="36">36</option>
-            <option value="37">37</option>
-            <option value="38">38</option>
-            <option value="39">39</option>
-            <option value="40">40</option>
-            <option value="41">41</option>
-            <option value="42">42</option>
-            <option value="43">43</option>
-            <option value="44">44</option>
-            <option value="45">45</option>
-          </select>
-        </label>
+        <div class="form-part">
+            <h1>UNDEFINED</h1>
+            <form id="pedidoForm">
 
-        <label for="color">
-          Color:
-          <select name="color" id="color" required>
-            <option value="" disabled selected>Selecciona color</option>
-            <option value="rojo">Rojo</option>
-            <option value="azul">Azul</option>
-            <option value="verde">Verde</option>
-            <option value="negro">Negro</option>
-            <option value="blanco">Blanco</option>
-          </select>
-        </label>
+                <input type="text", placeholder="Nombre y Apellidos">
 
-        <button type="submit">Enviar pedido</button>
-      </form>
+                <input type="text", placeholder="DNI(99999999Z)">
+
+                <div class="select-group">        
+                    <select name="talla" id="talla" required>
+                        <option value="" disabled selected>Talla</option>
+                        <option value="36">36</option>
+                        <option value="37">37</option>
+                        <option value="38">38</option>
+                        <option value="39">39</option>
+                        <option value="40">40</option>
+                        <option value="41">41</option>
+                        <option value="42">42</option>
+                        <option value="43">43</option>
+                        <option value="44">44</option>
+                        <option value="45">45</option>
+                    </select>
+
+
+                    <select name="color" id="color" required>
+                        <option value="" disabled selected>Color</option>
+                        <option value="rojo">Rojo</option>
+                        <option value="azul">Azul</option>
+                        <option value="verde">Verde</option>
+                        <option value="negro">Negro</option>
+                        <option value="blanco">Blanco</option>
+                    </select>
+                </div>
+            </form>
+        </div>
+
+        <div class = "visor">
+            <div class="threed-container">
+                <model-viewer 
+                    alt="Mi modelo 3D" 
+                    src="../static/images/Crocs-rosas.glb" ar environment-image: "../static/images/neon_phtostudio_1k.hdr"
+                    camera-controls 
+                    shadow-intensity="1">
+                </model-viewer>
+            </div>
+
+            <button type="submit"><span>ENVIAR</span></button>
+        </div>
     </div>
-  </div>
+
 </body>
 </html>
