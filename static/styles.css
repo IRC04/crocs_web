@@ -90,8 +90,8 @@ body {
 
 .card select{
   display: flex;
-  max-width: 250px;
-  width: 32vw;
+  max-width: 300px;
+  width: 40vw;
   height:80%;
   outline: none;
   padding-left: 20px;
