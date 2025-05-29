@@ -51,30 +51,31 @@
       </form>
     </div>
 
-    <!-- MODELO Y BOTÓN ENVIAR -->
-    <div class="visor">
-      <div class="threed-container">
-        <model-viewer id="croc-viewer"
-          alt="Mi modelo 3D" 
-          src="../static/images/Crocs-Gris.glb"
-          ar environment-image="../static/images/lakeside_night_1k.hdr"
-          camera-controls 
-          shadow-intensity="1">
-        </model-viewer>
-      </div>
-      <button type="button" id="sendBtn"><span>ENVIAR</span></button>
-    </div>
-
-    <!-- BOTONES QR + IMÁGENES -->
-    <div class="qr-button-group">
-      <div class="qr-item">
-        <button type="button" id="btnCompra" class="qr-buttons">COMPRA</button>
-        <button type="button" id="btnDevolucion" class="qr-buttons">DEVOLUCIÓN</button>
-      </div>
-      <img id="qrCompra" src="" alt="QR Compra" class="qr-img">
-      <img id="qrDevolucion" src="" alt="QR Devolución" class="qr-img">
-    </div>
+  <!-- MODELO Y BOTÓN ENVIAR -->
+<div class="visor">
+  <div class="threed-container">
+    <model-viewer id="croc-viewer"
+      alt="Mi modelo 3D" 
+      src="../static/images/Crocs-Gris.glb"
+      ar environment-image="../static/images/lakeside_night_1k.hdr"
+      camera-controls 
+      shadow-intensity="1">
+    </model-viewer>
   </div>
+  <button type="button" id="sendBtn"><span>ENVIAR</span></button>
+</div>
+
+<!-- BOTONES QR + IMÁGENES -->
+<div class="qr-button-group">
+  <div class="qr-item">
+    <button type="button" id="btnCompra" class="qr-buttons">COMPRA</button>
+    <button type="button" id="btnDevolucion" class="qr-buttons">DEVOLUCIÓN</button>
+  </div>
+  <img id="qrCompra" src="" alt="QR Compra" class="qr-img">
+  <img id="qrDevolucion" src="" alt="QR Devolución" class="qr-img">
+</div>
+
+
 
 </body>
 </html>
