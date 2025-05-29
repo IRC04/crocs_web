@@ -188,6 +188,23 @@ model-viewer {
   cursor: pointer;
   margin-bottom: 1rem;
 }
+.card .qr-buttons {
+  font-weight: bold;
+  letter-spacing: normal;
+  font-size: 2.3rem; /* Usa rem para escalabilidad */
+  height: auto;
+  padding: 0.75rem 1.5rem;
+  width: auto;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+  border-radius: 40px;
+  background-color: #7f02cc1F;
+  color: #7f02cc;
+  font-family: "Poppins", sans-serif;
+  border: none;
+  cursor: pointer;
+}
+
 
 .visor{
   display: flex;
@@ -213,4 +230,31 @@ model-viewer {
   to {
     --angle: 360deg;
   }
+}
+
+.qr-button-group {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  margin-top: 2rem;
+}
+
+         
+.qr-item {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  gap: 2rem;
+}
+
+
+.qr-img {
+  display: none;
+  width: 60vw;      
+  max-width: 300px;
+  height: auto;       
+  aspect-ratio: 1;    
+  margin-top: 1.5rem;
+  object-fit: contain;
 }
