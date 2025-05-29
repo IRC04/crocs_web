@@ -250,11 +250,11 @@ model-viewer {
 
 
 .qr-img {
-  display: none;
-  width: 60vw;      
-  max-width: 300px;
-  height: auto;       
-  aspect-ratio: 1;    
+  display: block;        /* Asegura que se muestre */
+  width: 80vw;           /* Ocupa el 80% del ancho de la ventana */
+  max-width: 600px;      /* Máximo 600px */
+  height: auto;
+  aspect-ratio: 1;
   margin-top: 1.5rem;
   object-fit: contain;
 }
