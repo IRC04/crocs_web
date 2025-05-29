@@ -1,5 +1,7 @@
+// script.js
+
 document.addEventListener('DOMContentLoaded', () => {
-  // === MODELO 3D ===
+  // 1) Mapea cada color con su fichero .glb
   const modelMap = {
     Rojo: 'Crocs-Rojo.glb',
     Azul: 'Crocs-Azul.glb',
@@ -11,47 +13,57 @@ document.addEventListener('DOMContentLoaded', () => {
     Rosa: 'Crocs-Rosa.glb',
   };
 
+  // Ruta base de modelos
   const modelFolder = '../static/images/';
   const colorSelect = document.getElementById('color');
   const modelViewer = document.getElementById('croc-viewer');
 
+  // Función para actualizar el modelo
   function updateModel() {
     const color = colorSelect.value;
     if (!color || !modelMap[color]) return;
     const newSrc = modelFolder + modelMap[color];
+    console.log('Cambiando modelo a:', newSrc);
     modelViewer.setAttribute('src', newSrc);
   }
 
-  if (colorSelect) {
-    colorSelect.addEventListener('change', updateModel);
-  }
+  // Listener para cambio de color
+  colorSelect.addEventListener('change', updateModel);
 
-  // === MQTT (solo conexión) ===
+ // 2) Conexión MQTT
+  console.log('Intentando conectar a MQTT...');
   const client = mqtt.connect('wss://broker.emqx.io:8084/mqtt');
   client.on('connect', () => console.log('✅ Conectado a MQTT por WSS'));
   client.on('error', err => console.error('❌ Error MQTT:', err));
 
- 
+  // 3) Enviar mensaje al pulsar botón
+  sendBtn.addEventListener('click', () => {
+    const talla = document.getElementById('talla').value;
+    const color = colorSelect.value;
+    const nombre = document.getElementById('nombre').value;
+    const dni    = document.getElementById('dni').value;
 
-  // === BOTÓN ENVIAR ===
-  const sendBtn = document.getElementById('sendBtn');
-  if (sendBtn) {
-    sendBtn.addEventListener('click', () => {
-      const talla = document.getElementById('talla').value;
-      const color = document.getElementById('color').value;
-      const nombre = document.getElementById('nombre').value;
-      const dni    = document.getElementById('dni').value;
+    if (!talla || !color || !nombre || !dni) {
+      alert('Rellena todos los campos antes de enviar.');
+      return;
+    }
 
-      if (!talla || !color || !nombre || !dni) {
-        alert('Rellena todos los campos antes de enviar.');
-        return;
-      }
+    const payload = JSON.stringify({ nombre, dni, talla, color });
+    console.log('Publicando:', payload);
 
-      document.getElementById('pedidoForm').submit();
-    });
-  }
-
-
+    if (client.connected) {
+      client.publish('tienda/pedidos', payload, {}, err => {
+        if (err) {
+          console.error('Error al publicar:', err);
+        } else {
+          alert('Pedido enviado!');
+        }
+      });
+    } else {
+      alert('No conectado a MQTT aún.');
+    }
+  });
+});
 
   // === QR COMPRA / DEVOLUCIÓN ===
   const btnCompra = document.getElementById('btnCompra');
@@ -71,5 +83,4 @@ document.addEventListener('DOMContentLoaded', () => {
       qrDevolucion.style.display = 'block';
       qrCompra.style.display = 'none';
     });
-  }
-});
+  };
